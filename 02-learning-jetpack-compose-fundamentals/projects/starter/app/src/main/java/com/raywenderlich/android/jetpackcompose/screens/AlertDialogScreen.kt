@@ -34,7 +34,13 @@
 
 package com.raywenderlich.android.jetpackcompose.screens
 
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import com.raywenderlich.android.jetpackcompose.R
 import com.raywenderlich.android.jetpackcompose.router.BackButtonHandler
 import com.raywenderlich.android.jetpackcompose.router.JetFundamentalsRouter
 import com.raywenderlich.android.jetpackcompose.router.Screen
@@ -43,14 +49,43 @@ import com.raywenderlich.android.jetpackcompose.router.Screen
 @Composable
 fun AlertDialogScreen() {
 
-  MyAlertDialog()
+    MyAlertDialog()
 
-  BackButtonHandler {
-    JetFundamentalsRouter.navigateTo(Screen.Navigation)
-  }
+    BackButtonHandler {
+        JetFundamentalsRouter.navigateTo(Screen.Navigation)
+    }
 }
 
 @Composable
 fun MyAlertDialog() {
-  //TODO add your code here
+    //TODO add your code here
+    val shouldShowDialog = remember {
+        mutableStateOf(true)
+    }
+    if (shouldShowDialog.value) {
+        AlertDialog(onDismissRequest = { /*TODO*/
+            shouldShowDialog.value = false
+            JetFundamentalsRouter.navigateTo(Screen.Navigation)
+        },
+            shape = MaterialTheme.shapes.large,
+            title = {
+                Text(text = stringResource(id = R.string.alert_dialog_title))
+            },
+            text = {
+                Text(text = stringResource(id = R.string.alert_dialog_text))
+            },
+            confirmButton = {
+                Button(
+                    onClick = { /*TODO*/
+                        shouldShowDialog.value = false
+                        JetFundamentalsRouter.navigateTo(Screen.Navigation)
+                    },
+
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.colorPrimary))
+                ) {
+                    Text(text = stringResource(id = R.string.confirm))
+                }
+            }
+        )
+    }
 }

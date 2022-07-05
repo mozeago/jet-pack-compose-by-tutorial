@@ -37,29 +37,58 @@ package com.raywenderlich.android.jetpackcompose.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.fontResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.raywenderlich.android.jetpackcompose.R
 import com.raywenderlich.android.jetpackcompose.router.BackButtonHandler
 import com.raywenderlich.android.jetpackcompose.router.JetFundamentalsRouter
 import com.raywenderlich.android.jetpackcompose.router.Screen
 
 @Composable
 fun TextScreen() {
-  Column(
-      modifier = Modifier.fillMaxSize(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center
-  ) {
-    MyText()
-  }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        MyText()
+    }
 
-  BackButtonHandler {
-    JetFundamentalsRouter.navigateTo(Screen.Navigation)
-  }
+    BackButtonHandler {
+        JetFundamentalsRouter.navigateTo(Screen.Navigation)
+    }
 }
 
 @Composable
+@Preview(showBackground = true)
 fun MyText() {
-  //TODO add your code here
+    //TODO add your code here
+    Text(
+        text = stringResource(id = R.string.jetpack_compose_long_string),
+        fontStyle = FontStyle.Italic,//can only have normal or italic
+        color = colorResource(id = R.color.colorPrimary),
+        fontSize = 30.sp,
+        fontWeight = FontWeight.ExtraBold,//can have all variations of fonts listed in google fonts page
+        lineHeight = 30.sp,
+        maxLines = 3,//if you set maxlines, setting overflow to visible will not change the maxLines
+        overflow = TextOverflow.Ellipsis,
+        softWrap = true,//Whether the text should break at soft line breaks.
+        // If false, the glyphs in the text will be positioned as if there was unlimited horizontal
+        // space. If softWrap is false, overflow and TextAlign may have unexpected effects.
+        fontFamily = FontFamily(Font(R.font.open_sans_variable_font_wdth)),
+        letterSpacing = 10.sp
+
+    )
 }

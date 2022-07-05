@@ -38,29 +38,67 @@ package com.raywenderlich.android.jetpackcompose.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import com.raywenderlich.android.jetpackcompose.R
 import com.raywenderlich.android.jetpackcompose.router.BackButtonHandler
 import com.raywenderlich.android.jetpackcompose.router.JetFundamentalsRouter
 import com.raywenderlich.android.jetpackcompose.router.Screen
 
 @Composable
 fun TextFieldScreen() {
-  Column(
-      modifier = Modifier.fillMaxSize(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center
-  ) {
-    MyTextField()
-  }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        MyTextField()
+    }
 
-  BackButtonHandler {
-    JetFundamentalsRouter.navigateTo(Screen.Navigation)
-  }
+    BackButtonHandler {
+        JetFundamentalsRouter.navigateTo(Screen.Navigation)
+    }
 }
 
 @Composable
+@Preview(showBackground = true)
 fun MyTextField() {
-  //TODO add your code here
+    //TODO add your code here
+    val textValue = remember {
+        mutableStateOf("")
+    }//without remember, you will not be able to pickn the input from the user, everytime they type state changes and it is reset to empty string
+    val primaryColor = colorResource(id = R.color.colorPrimary)
+
+    OutlinedTextField(
+        value = textValue.value,
+        onValueChange = {//callback that fires everytime a keyboard is striken
+            textValue.value = it
+        },
+        label = {
+            Text(text = stringResource(id = R.string.email))
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = primaryColor,
+            focusedLabelColor = primaryColor,
+            cursorColor = primaryColor
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Email
+        )
+    )
 }
