@@ -34,33 +34,91 @@
 
 package com.raywenderlich.android.jetpackcompose.screens
 
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.raywenderlich.android.jetpackcompose.R
 import com.raywenderlich.android.jetpackcompose.router.BackButtonHandler
 import com.raywenderlich.android.jetpackcompose.router.JetFundamentalsRouter
 import com.raywenderlich.android.jetpackcompose.router.Screen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ScaffoldScreen() {
-  MyScaffold()
+    MyScaffold()
 
-  BackButtonHandler {
-    JetFundamentalsRouter.navigateTo(Screen.Navigation)
-  }
+    BackButtonHandler {
+        JetFundamentalsRouter.navigateTo(Screen.Navigation)
+    }
 }
 
 @Composable
 fun MyScaffold() {
-  //TODO write your code here
+    //TODO write your code here
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val scope: CoroutineScope = rememberCoroutineScope()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        contentColor = colorResource(id = R.color.colorPrimary),
+        content = {
+            MyRow()
+        },
+        topBar = {
+            MyTopAppBar(scaffoldState = scaffoldState, scope = scope)
+        },
+        bottomBar = {
+            MyBottomAppBar()
+
+        },
+        drawerContent = {
+            MyColumn()
+        }
+    )
 }
 
 @Composable
-fun MyTopAppBar(scaffoldState: ScaffoldState) {
-  //TODO write your code here
+fun MyTopAppBar(scaffoldState: ScaffoldState, scope: CoroutineScope) {
+    //TODO write your code here
+    val drawerState = scaffoldState.drawerState
+    TopAppBar(
+        navigationIcon = {
+            IconButton(
+                content = {
+                    Icon(
+                        Icons.Default.Menu,
+                        tint = Color.White,
+                        contentDescription = stringResource(id = R.string.menu)
+                    )
+                },
+                onClick = { /*TODO*/
+                    scope.launch {
+                        if (drawerState.isClosed) drawerState.open() else drawerState.open()
+                    }
+                }
+            )
+        },
+        title = {
+            Text(text = stringResource(id = R.string.app_name), color = Color.White)
+        },
+        backgroundColor = colorResource(id = R.color.colorPrimary),
+        elevation = 16.dp
+    )
 }
 
 @Composable
 fun MyBottomAppBar() {
-  //TODO write your code here
+    //TODO write your code here
+    BottomAppBar(
+        content = {},
+        backgroundColor = colorResource(id = R.color.colorPrimary)
+    )
+
 }
 
