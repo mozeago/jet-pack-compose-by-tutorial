@@ -37,7 +37,9 @@ package com.raywenderlich.android.jetpackcompose.screens
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -65,7 +67,7 @@ fun ScrollingScreen() {
 @Composable
 fun MyScrollingScreen() {
     //TODO add your code here
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+    Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
         BookImage(
             imageResId = R.drawable.advanced_architecture_android,
             contentDescriptionResId = R.string.advanced_architecture_android
