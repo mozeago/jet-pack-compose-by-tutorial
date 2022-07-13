@@ -37,26 +37,52 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.rememberCoroutineScope
+import com.raywenderlich.android.jetnotes.routing.Screen
+import com.raywenderlich.android.jetnotes.theme.JetNotesTheme
+import com.raywenderlich.android.jetnotes.ui.components.AppDrawer
+import com.raywenderlich.android.jetnotes.ui.components.Note
 import com.raywenderlich.android.jetnotes.viewmodel.MainViewModel
 import com.raywenderlich.android.jetnotes.viewmodel.MainViewModelFactory
+import kotlinx.coroutines.launch
 
 /**
  * Main activity for the app.
  */
 class MainActivity : AppCompatActivity() {
 
-  private val viewModel: MainViewModel by viewModels(factoryProducer = {
-    MainViewModelFactory(
-      this,
-      (application as JetNotesApplication).dependencyInjector.repository
-    )
-  })
+    private val viewModel: MainViewModel by viewModels(factoryProducer = {
+        MainViewModelFactory(
+            this,
+            (application as JetNotesApplication).dependencyInjector.repository
+        )
+    })
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    setContent {
+        setContent {
+            JetNotesTheme {
+                val coroutineScope = rememberCoroutineScope()
+                val scaffoldState: ScaffoldState = rememberScaffoldState()
+                Scaffold(
+                    scaffoldState = scaffoldState,
+                    drawerContent = {
+                        AppDrawer(currentScreen = Screen.Notes, closeDrawerAction = {
+                            coroutineScope.launch {
+                                scaffoldState.drawerState.close()
+                            }
+                        })
+                    },
+                    content = {
+                        Note()
+                    }
 
+                )
+            }
+        }
     }
-  }
 }
